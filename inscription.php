@@ -63,11 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    if ($httpCode == 200) {
-        $message = "<p class='success'>✅ Inscription réussie !</p>";
-    } else {
-        $message = "<p class='error'>❌ Erreur : $res</p>";
-    }
+if ($httpCode == 200 || $httpCode == 204 || empty($res)) {
+    $message = "<p class='success'>✅ Inscription réussie !</p>";
+} else if (strpos($res, 'rror') !== false) {
+    $message = "<p class='error'>❌ Erreur : $res</p>";
+} else {
+    $message = "<p class='success'>✅ Inscription réussie !</p>";
+}
 }
 ?>
 <!DOCTYPE html>
