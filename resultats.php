@@ -20,7 +20,6 @@ $resConcours = curl_exec($ch);
 curl_close($ch);
 $xmlConcours = simplexml_load_string("<root>$resConcours</root>");
 
-// Résultats du concours sélectionné
 $resultats = null;
 $selectedId = "";
 
@@ -88,4 +87,37 @@ if (isset($_GET['concoursId']) && $_GET['concoursId'] != "") {
         </option>
       <?php endforeach; ?>
     </select>
-    <button type="submit"
+    <button type="submit">Afficher</button>
+  </form>
+
+  <?php if ($resultats): ?>
+  <br>
+  <table>
+    <thead>
+      <tr>
+        <th>Participant</th>
+        <th>Complexité</th>
+        <th>Temps (ms)</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($resultats->resultat as $r): ?>
+      <tr class="<?= (string)$r->vainqueur === 'true' ? 'vainqueur' : '' ?>">
+        <td>
+          <?= htmlspecialchars((string)$r->nom) ?>
+          <?= (string)$r->vainqueur === 'true' ? ' 🏆' : '' ?>
+        </td>
+        <td><?= (string)$r->complexite ?></td>
+        <td><?= (string)$r->temps ?></td>
+        <td><?= (string)$r->score ?></td>
+      </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+  <?php endif; ?>
+
+</main>
+
+</body>
+</html>
